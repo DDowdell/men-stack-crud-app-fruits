@@ -1,11 +1,22 @@
 
+const dotenv = require('dotenv'); // require dotenv package
+dotenv.config(); // Loads the environment variables from .env file
 
 const express = require('express');
+const mongoose = require('mongoose'); // require mongose package
 
 const app = express();
 
-app.get("/", async (requestAnimationFrame, res) => {
-    res.render("index.ejs");
+// Connect to MongoDB using the connection string in the .env file
+mongoose.connect(process.env.MONGODB_URI);
+// log connection status to terminal on start
+mongoose.connection.on("connected", () => {
+  console.log(`Connected to MongoDB ${mongoose.connection.name}.`);
+});
+
+
+app.get("/", async (req, res) => {
+    res.render('index.ejs');
 });
 
 
