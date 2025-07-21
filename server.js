@@ -7,6 +7,11 @@ const mongoose = require('mongoose'); // require mongose package
 
 const app = express();
 
+const methodOverride = require("method-override");
+const morgan = require("morgan");
+
+// Model connection=================================================
+
 // Connect to MongoDB using the connection string in the .env file
 mongoose.connect(process.env.MONGODB_URI);
 // log connection status to terminal on start
@@ -16,10 +21,16 @@ mongoose.connection.on("connected", () => {
 
 // Import the Fruit model
 const Fruit = require("./models/fruit.js");
+
+//Middleware========================================================
 app.use(express.urlencoded({ extended: false }));
+app.use(methodOverride("_method")); // new
+app.use(morgan("dev")); //new
 
 
-//Routes below
+
+//Routes below==========================================================
+
 app.get("/", async (req, res) => {
     res.render('index.ejs');
 });
@@ -56,9 +67,14 @@ app.post("/fruits", async (req, res) => {
     console.log(req.body);
 });
 
+app.delete("/fruits/:fruitId", async (req, res) => {
+  await Fruit.findByIdAndDelete(req.params.fruitId);
+  res.redirect("/fruits");
+});
 
 
-//Routes above
+
+//Routes above===============================================
 app.listen(3000, () => {
     console.log('Listening on port 3000');
 });

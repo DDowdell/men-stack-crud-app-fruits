@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- return link -->
     <a href="/fruits/">Back to Fruits</a>
 
     <title>
@@ -21,6 +22,12 @@
         <% } else { %>
             <p>This fruit is not ready to eat!</p>
             <% } %>
+
+                <!-- delete button -->
+                <form action="/fruits/<%=fruit._id%>?_method=DELETE" method="POST">
+                    <button type="submit">Delete <%= fruit.name %></button>
+                </form>
+
 </body>
 
 </html>
