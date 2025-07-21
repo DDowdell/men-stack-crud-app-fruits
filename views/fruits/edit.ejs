@@ -11,7 +11,7 @@
 
 <body>
     <h1>Edit <% fruit.name %></h1>
-    <form action="/fruits/<%=fruit._id%>?_method=PUT" method="POST"></form>
+    <form action="/fruits/<%=fruit._id%>?_method=PUT" method="POST">
         <label for="name">Name:</label>
         <input type="text" name="name" value="<%= fruit.name %>" />
         <label for="isReadyToEat">Ready to Eat?</label>
