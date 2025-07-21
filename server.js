@@ -42,17 +42,16 @@ app.get("/fruits", async (req, res) => {
     res.render("fruits/index.ejs", { fruits: allFruits });
 });
 
-
-//get new fruits route
+//GET /fruits/new
 app.get("/fruits/new", (req, res) => {
     res.render('fruits/new.ejs');
 });
 
+//GET fruit by ID
 app.get("/fruits/:fruitId", async (req, res) => { // 'id' route must be placed AFTER 'new' route
     const foundFruit = await Fruit.findById(req.params.fruitId);
   res.render("fruits/show.ejs", { fruit: foundFruit });
 });
-
 
 // POST /fruits
 app.post("/fruits", async (req, res) => {
@@ -63,14 +62,23 @@ app.post("/fruits", async (req, res) => {
     }
     await Fruit.create(req.body); //database transaction
     res.redirect("/fruits");
-
     console.log(req.body);
 });
 
+// DELETE fruit function
 app.delete("/fruits/:fruitId", async (req, res) => {
   await Fruit.findByIdAndDelete(req.params.fruitId);
   res.redirect("/fruits");
 });
+
+// GET /fruits/:fruitId/edit
+app.get("/fruits/:fruitId/edit", async (req, res) => {
+  const foundFruit = await Fruit.findById(req.params.fruitId);
+  res.render("fruits/edit.ejs", {
+    fruit: foundFruit,
+  });
+});
+
 
 
 
