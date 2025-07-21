@@ -24,23 +24,36 @@ app.get("/", async (req, res) => {
     res.render('index.ejs');
 });
 
+// GET /fruits index
+app.get("/fruits", async (req, res) => {
+    const allFruits = await Fruit.find();
+    console.log(allFruits); // log the fruits!
+    res.render("fruits/index.ejs", { fruits: allFruits });
+});
+
+
 //get new fruits route
 app.get("/fruits/new", (req, res) => {
     res.render('fruits/new.ejs');
 });
 
+app.get("/fruits/:fruitId", async (req, res) => { // 'id' route must be placed AFTER 'new' route
+    const foundFruit = await Fruit.findById(req.params.fruitId);
+  res.render("fruits/show.ejs", { fruit: foundFruit });
+});
+
 
 // POST /fruits
 app.post("/fruits", async (req, res) => {
-      if (req.body.isReadyToEat === "on") {
-    req.body.isReadyToEat = true;
-  } else {
-    req.body.isReadyToEat = false;
-  }
-  await Fruit.create(req.body); //database transaction
-  res.redirect("/fruits/new");
+    if (req.body.isReadyToEat === "on") {
+        req.body.isReadyToEat = true;
+    } else {
+        req.body.isReadyToEat = false;
+    }
+    await Fruit.create(req.body); //database transaction
+    res.redirect("/fruits");
 
-  console.log(req.body);
+    console.log(req.body);
 });
 
 
